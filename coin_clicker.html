@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script>
+      var coinCount = 0;
+      var clickRate = 1;
+
+      function drawCircle() {
+        var canvas = document.getElementById("game-board");
+        var context = canvas.getContext("2d");
+        context.fillStyle = '#00F';
+        context.beginPath();
+        context.arc(95, 50, 40, 0, 2*Math.PI);
+        context.fill();
+      }
+
+      function handleClick() {
+        coinCount += clickRate;
+        if (coinCount > 10) {
+          clickRate = 2
+        }
+        showStats();
+      }
+
+      function showStats() {
+        document.getElementById("coinsCell").innerHTML = coinCount;
+        document.getElementById("clickRateCell").innerHTML = clickRate;
+      }
+
+      function init() {
+        drawCircle();
+        showStats();
+      }
+    </script>
+  </head>
+  <body onload="init();">
+    <canvas id="game-board" onclick="handleClick();"></canvas>
+    <table>
+      <tr>
+        <th>Coins</th>
+        <td id="coinsCell"></td>
+      </tr>
+      <tr>
+        <th>Click rate</th>
+        <td id="clickRateCell">1</td>
+      </tr>
+    </table>
+  </body>
+</html>
