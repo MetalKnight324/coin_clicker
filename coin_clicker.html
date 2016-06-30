@@ -6,6 +6,7 @@
       var coinCount = 0;
       var clickRate = 1;
       var doubleClickRateCost = 10;
+      var perSecondRate = 0;
 
       function drawCircle() {
         var canvas = document.getElementById("game-board");
@@ -30,6 +31,10 @@
         showStats();
       }
 
+      function purchasePerSecondRate() {
+        perSecondRate += 10;
+      }
+
       function enableClickRateButton() {
         var button = document.getElementById("clickRateButton");
         if(coinCount >= doubleClickRateCost) {
@@ -37,6 +42,13 @@
         } else {
           button.disabled = true;
         }
+      }
+
+      function addPerSecond() {
+        console.log("Coins Per Second");
+        coinCount = coinCount + perSecondRate;
+        enableClickRateButton();
+        showStats();
       }
 
       function showStats() {
@@ -48,6 +60,7 @@
         drawCircle();
         showStats();
         enableClickRateButton();
+        setInterval(addPerSecond, 1000);
       }
     </script>
   </head>
@@ -64,5 +77,6 @@
       </tr>
     </table>
     <button id="clickRateButton" onclick="purchaseClickRate();">Click Rate Double</button>
+    <button id="lemonadeButton" onclick="purchasePerSecondRate();">Lemonade Stand</button>
   </body>
 </html>
