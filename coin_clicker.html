@@ -33,6 +33,7 @@
 
       function purchasePerSecondRate() {
         perSecondRate += 10;
+        showStats();
       }
 
       function enableClickRateButton() {
@@ -54,6 +55,8 @@
       function showStats() {
         document.getElementById("coinsCell").innerHTML = coinCount;
         document.getElementById("clickRateCell").innerHTML = clickRate;
+        document.getElementById("perSecondCell").innerHTML = perSecondRate;
+
       }
 
       function init() {
@@ -75,6 +78,10 @@
         <th>Click rate</th>
         <td id="clickRateCell">1</td>
       </tr>
+      <tr>
+          <th>Per Second</th>
+          <td id="perSecondCell"></td>
+        </tr>
     </table>
     <button id="clickRateButton" onclick="purchaseClickRate();">Click Rate Double</button>
     <button id="lemonadeButton" onclick="purchasePerSecondRate();">Lemonade Stand</button>
