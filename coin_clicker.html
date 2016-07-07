@@ -26,7 +26,7 @@
       function purchaseClickRate() {
         clickRate *= 2;
         coinCount = coinCount - doubleClickRateCost;
-        Math.round(doubleClickRateCost *= 2.5);
+        doubleClickRateCost = Math.round(doubleClickRateCost * 2.5);
         enableClickRateButton();
         showStats();
       }
@@ -56,6 +56,7 @@
         document.getElementById("coinsCell").innerHTML = coinCount;
         document.getElementById("clickRateCell").innerHTML = clickRate;
         document.getElementById("perSecondCell").innerHTML = perSecondRate;
+        document.getElementById("doubleClickRateCell").innerHTML = doubleClickRateCost;
 
       }
 
@@ -82,6 +83,11 @@
           <th>Per Second</th>
           <td id="perSecondCell"></td>
         </tr>
+        <tr>
+            <th>Click Rate x2 Cost</th>
+            <td id="doubleClickRateCell"></td>
+          </tr>
+
     </table>
     <button id="clickRateButton" onclick="purchaseClickRate();">Click Rate Double</button>
     <button id="lemonadeButton" onclick="purchasePerSecondRate();">Lemonade Stand</button>
