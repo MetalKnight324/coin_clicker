@@ -7,6 +7,7 @@
       var clickRate = 1;
       var doubleClickRateCost = 10;
       var perSecondRate = 0;
+      var lemonadeCost = 100;
 
       function drawCircle() {
         var canvas = document.getElementById("game-board");
@@ -20,6 +21,7 @@
       function handleClick() {
         coinCount += clickRate;
         enableClickRateButton();
+        enableLemonadeButton();
         showStats();
       }
 
@@ -28,11 +30,16 @@
         coinCount = coinCount - doubleClickRateCost;
         doubleClickRateCost = Math.round(doubleClickRateCost * 2.5);
         enableClickRateButton();
+        enableLemonadeButton();
         showStats();
       }
 
       function purchasePerSecondRate() {
         perSecondRate += 10;
+        coinCount = coinCount - lemonadeCost;
+        lemonadeCost = Math.round(lemonadeCost * 2.5)
+        enableClickRateButton();
+        enableLemonadeButton();
         showStats();
       }
 
@@ -45,10 +52,20 @@
         }
       }
 
+      function enableLemonadeButton() {
+        var button = document.getElementById("lemonadeButton");
+        if(coinCount >= lemonadeCost) {
+          button.disabled = false;
+        } else {
+          button.disabled = true;
+        }
+      }
+
       function addPerSecond() {
         console.log("Coins Per Second");
         coinCount = coinCount + perSecondRate;
         enableClickRateButton();
+        enableLemonadeButton();
         showStats();
       }
 
@@ -57,6 +74,7 @@
         document.getElementById("clickRateCell").innerHTML = clickRate;
         document.getElementById("perSecondCell").innerHTML = perSecondRate;
         document.getElementById("doubleClickRateCell").innerHTML = doubleClickRateCost;
+        document.getElementById("lemonadeCostCell").innerHTML = lemonadeCost;
 
       }
 
@@ -64,6 +82,7 @@
         drawCircle();
         showStats();
         enableClickRateButton();
+        enableLemonadeButton();
         setInterval(addPerSecond, 1000);
       }
     </script>
@@ -80,14 +99,17 @@
         <td id="clickRateCell">1</td>
       </tr>
       <tr>
-          <th>Per Second</th>
-          <td id="perSecondCell"></td>
-        </tr>
-        <tr>
-            <th>Click Rate x2 Cost</th>
-            <td id="doubleClickRateCell"></td>
-          </tr>
-
+        <th>Per Second</th>
+        <td id="perSecondCell"></td>
+      </tr>
+      <tr>
+        <th>Click Rate x2 Cost</th>
+        <td id="doubleClickRateCell"></td>
+      </tr>
+      <tr>
+        <th>Lemonade Stand Cost</th>
+        <td id="lemonadeCostCell"></td>
+      </tr>
     </table>
     <button id="clickRateButton" onclick="purchaseClickRate();">Click Rate Double</button>
     <button id="lemonadeButton" onclick="purchasePerSecondRate();">Lemonade Stand</button>
