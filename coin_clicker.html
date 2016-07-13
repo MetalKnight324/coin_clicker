@@ -8,6 +8,7 @@
       var doubleClickRateCost = 10;
       var perSecondRate = 0;
       var lemonadeCost = 100;
+      var pizzariaCost = 500;
 
       function drawCircle() {
         var canvas = document.getElementById("game-board");
@@ -18,43 +19,41 @@
         context.fill();
       }
 
+      function afterCoinCountChange() {
+        enablePurchaseButton("clickRateButton", doubleClickRateCost);
+        enablePurchaseButton("lemonadeButton", lemonadeCost);
+        showStats();
+      }
+
       function handleClick() {
         coinCount += clickRate;
-        enableClickRateButton();
-        enableLemonadeButton();
-        showStats();
+        afterCoinCountChange();
       }
 
       function purchaseClickRate() {
         clickRate *= 2;
         coinCount = coinCount - doubleClickRateCost;
         doubleClickRateCost = Math.round(doubleClickRateCost * 2.5);
-        enableClickRateButton();
-        enableLemonadeButton();
-        showStats();
+        afterCoinCountChange();
       }
 
-      function purchasePerSecondRate() {
+      function purchaseLemonade() {
         perSecondRate += 10;
         coinCount = coinCount - lemonadeCost;
         lemonadeCost = Math.round(lemonadeCost * 2.5)
-        enableClickRateButton();
-        enableLemonadeButton();
-        showStats();
+        afterCoinCountChange();
       }
 
-      function enableClickRateButton() {
-        var button = document.getElementById("clickRateButton");
-        if(coinCount >= doubleClickRateCost) {
-          button.disabled = false;
-        } else {
-          button.disabled = true;
-        }
+      function purchasePizzaria() {
+        perSecondRate += 65;
+        coinCount = coinCount - pizzariaCost;
+        pizzariaCost = Math.round(pizzariaCost * 2.5)
+        afterCoinCountChange();
       }
 
-      function enableLemonadeButton() {
-        var button = document.getElementById("lemonadeButton");
-        if(coinCount >= lemonadeCost) {
+      function enablePurchaseButton(buttonId, minimumCoinCount) {
+        var button = document.getElementById(buttonId);
+        if(coinCount >= minimumCoinCount) {
           button.disabled = false;
         } else {
           button.disabled = true;
@@ -64,9 +63,7 @@
       function addPerSecond() {
         console.log("Coins Per Second");
         coinCount = coinCount + perSecondRate;
-        enableClickRateButton();
-        enableLemonadeButton();
-        showStats();
+        afterCoinCountChange();
       }
 
       function showStats() {
@@ -75,14 +72,12 @@
         document.getElementById("perSecondCell").innerHTML = perSecondRate;
         document.getElementById("doubleClickRateCell").innerHTML = doubleClickRateCost;
         document.getElementById("lemonadeCostCell").innerHTML = lemonadeCost;
-
+        document.getElementById("pizzariaCostCell").innerHTML = pizzariaCost;
       }
 
       function init() {
         drawCircle();
-        showStats();
-        enableClickRateButton();
-        enableLemonadeButton();
+        afterCoinCountChange();
         setInterval(addPerSecond, 1000);
       }
     </script>
@@ -110,8 +105,13 @@
         <th>Lemonade Stand Cost</th>
         <td id="lemonadeCostCell"></td>
       </tr>
+      <tr>
+        <th>Pizzaria Cost</th>
+        <td id="pizzariaCostCell"></td>
+      </tr>
     </table>
     <button id="clickRateButton" onclick="purchaseClickRate();">Click Rate Double</button>
-    <button id="lemonadeButton" onclick="purchasePerSecondRate();">Lemonade Stand</button>
+    <button id="lemonadeButton" onclick="purchaseLemonade();">Lemonade Stand</button>
+    <button id="pizzariaButton" onclick="purchasePizzaria();">Pizzaria</button>
   </body>
 </html>
