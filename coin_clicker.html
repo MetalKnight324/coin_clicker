@@ -3,12 +3,13 @@
   <head>
     <meta charset="utf-8" />
     <script>
-      var coinCount = 490;
+      var coinCount = 0;
       var clickRate = 1;
       var doubleClickRateCost = 10;
       var perSecondRate = 0;
       var lemonadeCost = 100;
       var pizzariaCost = 500;
+      var donutCost = 2000;
 
       function drawCircle() {
         var canvas = document.getElementById("game-board");
@@ -23,6 +24,7 @@
         enablePurchaseButton("clickRateButton", doubleClickRateCost);
         enablePurchaseButton("lemonadeButton", lemonadeCost);
         enablePurchaseButton("pizzariaButton", pizzariaCost);
+        enablePurchaseButton("donutButton", donutCost);
         showStats();
       }
 
@@ -52,6 +54,13 @@
         afterCoinCountChange();
       }
 
+      function purchaseDonutShop() {
+        perSecondRate += 300;
+        coinCount = coinCount - donutCost;
+        donutCost = Math.round(donutCost * 2.5);
+        afterCoinCountChange();
+      }
+
       function enablePurchaseButton(buttonId, minimumCoinCount) {
         var button = document.getElementById(buttonId);
         if(coinCount >= minimumCoinCount) {
@@ -74,6 +83,7 @@
         document.getElementById("doubleClickRateCell").innerHTML = doubleClickRateCost;
         document.getElementById("lemonadeCostCell").innerHTML = lemonadeCost;
         document.getElementById("pizzariaCostCell").innerHTML = pizzariaCost;
+        document.getElementById("donutCostCell").innerHTML = donutCost;
       }
 
       function init() {
@@ -110,9 +120,14 @@
         <th>Pizzaria Cost</th>
         <td id="pizzariaCostCell"></td>
       </tr>
+      <tr>
+        <th>Donut Shop Cost</th>
+        <td id="donutCostCell"></td>
+      </tr>
     </table>
     <button id="clickRateButton" onclick="purchaseClickRate();">Click Rate Double</button>
     <button id="lemonadeButton" onclick="purchaseLemonade();">Lemonade Stand</button>
     <button id="pizzariaButton" onclick="purchasePizzaria();">Pizzaria</button>
+    <button id="donutButton" onclick="purchaseDonutShop();">Donut Shop</button>
   </body>
 </html>
