@@ -10,6 +10,7 @@
       var lemonadeCost = 100;
       var pizzariaCost = 500;
       var donutCost = 2000;
+      var arcadeCost = 10000;
 
       function drawCircle() {
         var canvas = document.getElementById("game-board");
@@ -25,6 +26,7 @@
         enablePurchaseButton("lemonadeButton", lemonadeCost);
         enablePurchaseButton("pizzariaButton", pizzariaCost);
         enablePurchaseButton("donutButton", donutCost);
+        enablePurchaseButton("arcadeButton", arcadeCost);
         showStats();
       }
 
@@ -61,6 +63,13 @@
         afterCoinCountChange();
       }
 
+      function purchaseArcade() {
+         perSecondRate += 1750;
+         coinCount = coinCount - arcadeCost;
+         arcadeCost = Math.round(arcadeCost * 2.5);
+         afterCoinCountChange();
+       }
+
       function enablePurchaseButton(buttonId, minimumCoinCount) {
         var button = document.getElementById(buttonId);
         if(coinCount >= minimumCoinCount) {
@@ -84,6 +93,7 @@
         document.getElementById("lemonadeCostCell").innerHTML = lemonadeCost;
         document.getElementById("pizzariaCostCell").innerHTML = pizzariaCost;
         document.getElementById("donutCostCell").innerHTML = donutCost;
+        document.getElementById("arcadeCostCell").innerHTML = arcadeCost;
       }
 
       function init() {
@@ -124,10 +134,15 @@
         <th>Donut Shop Cost</th>
         <td id="donutCostCell"></td>
       </tr>
+      <tr>
+        <th>Arcade Cost</th>
+        <td id="arcadeCostCell"></td>
+      </tr>
     </table>
     <button id="clickRateButton" onclick="purchaseClickRate();">Click Rate Double</button>
     <button id="lemonadeButton" onclick="purchaseLemonade();">Lemonade Stand</button>
     <button id="pizzariaButton" onclick="purchasePizzaria();">Pizzaria</button>
     <button id="donutButton" onclick="purchaseDonutShop();">Donut Shop</button>
+    <button id="arcadeButton" onclick="purchaseArcade();">Arcade</button>
   </body>
 </html>
