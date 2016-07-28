@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <script>
-      var coinCount = 0;
+      var coinCount = 490;
       var clickRate = 1;
       var doubleClickRateCost = 10;
       var perSecondRate = 0;
@@ -22,6 +22,7 @@
       function afterCoinCountChange() {
         enablePurchaseButton("clickRateButton", doubleClickRateCost);
         enablePurchaseButton("lemonadeButton", lemonadeCost);
+        enablePurchaseButton("pizzariaButton", pizzariaCost);
         showStats();
       }
 
