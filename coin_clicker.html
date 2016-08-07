@@ -3,48 +3,208 @@
   <head>
     <meta charset="utf-8" />
     <script>
-      var coinCount = 0;
+      var coinCount = 1600;
       var clickRate = 1;
+      var doubleClickRateCost = 10;
+      var perSecondRate = 0;
+      var lemonadeCost = 100;
+      var pizzariaCost = 500;
+      var donutCost = 2000;
+      var arcadeCost = 10000;
+      var lemonadePS = 10;
+      var pizzariaPS = 65;
+      var donutPS = 300;
+      var arcadePS = 1750;
+      var lemonadePScost = 1500;
 
       function drawCircle() {
         var canvas = document.getElementById("game-board");
         var context = canvas.getContext("2d");
-        context.fillStyle = '#00F';
+        context.fillStyle = '#ffd700';
         context.beginPath();
         context.arc(95, 50, 40, 0, 2*Math.PI);
         context.fill();
       }
 
+      function afterCoinCountChange() {
+        enablePurchaseButton("clickRateButton", doubleClickRateCost);
+        enablePurchaseButton("lemonadeButton", lemonadeCost);
+        enablePurchaseButton("pizzariaButton", pizzariaCost);
+        enablePurchaseButton("donutButton", donutCost);
+        enablePurchaseButton("arcadeButton", arcadeCost);
+        enablePurchaseButton("lemonadeUpButton", lemonadePScost);
+        showStats();
+      }
+
       function handleClick() {
         coinCount += clickRate;
-        if (coinCount > 10) {
-          clickRate = 2
+        afterCoinCountChange();
+      }
+
+      function purchaseClickRate() {
+        clickRate *= 2;
+        coinCount = coinCount - doubleClickRateCost;
+        doubleClickRateCost = Math.round(doubleClickRateCost * 2.5);
+        afterCoinCountChange();
+      }
+
+      function purchaseLemonade() {
+        perSecondRate += lemonadePS;
+        coinCount = coinCount - lemonadeCost;
+        lemonadeCost = Math.round(lemonadeCost * 2.5)
+        afterCoinCountChange();
+      }
+
+      function purchasePizzaria() {
+        perSecondRate += pizzariaPS;
+        coinCount = coinCount - pizzariaCost;
+        pizzariaCost = Math.round(pizzariaCost * 2.5)
+        afterCoinCountChange();
+      }
+
+      function purchaseDonutShop() {
+        perSecondRate += donutPS;
+        coinCount = coinCount - donutCost;
+        donutCost = Math.round(donutCost * 2.5);
+        afterCoinCountChange();
+      }
+
+      function purchaseArcade() {
+         perSecondRate += arcadePS;
+         coinCount = coinCount - arcadeCost;
+         arcadeCost = Math.round(arcadeCost * 2.5);
+         afterCoinCountChange();
+       }
+
+       function upgradeLemonade() {
+          lemonadePS *= 3;
+          coinCount = coinCount - lemonadePScost;
+          lemonadePScost = Math.round(lemonadePScost * 5);
+          afterCoinCountChange();
         }
-        showStats();
+
+
+      function enablePurchaseButton(buttonId, minimumCoinCount) {
+        var button = document.getElementById(buttonId);
+        if(coinCount >= minimumCoinCount) {
+          button.disabled = false;
+        } else {
+          button.disabled = true;
+        }
+      }
+
+      function addPerSecond() {
+        console.log("Coins Per Second");
+        coinCount = coinCount + perSecondRate;
+        afterCoinCountChange();
       }
 
       function showStats() {
         document.getElementById("coinsCell").innerHTML = coinCount;
         document.getElementById("clickRateCell").innerHTML = clickRate;
+        document.getElementById("perSecondCell").innerHTML = perSecondRate;
+        document.getElementById("doubleClickRateCell").innerHTML = doubleClickRateCost;
+        document.getElementById("lemonadeCostCell").innerHTML = lemonadeCost;
+        document.getElementById("pizzariaCostCell").innerHTML = pizzariaCost;
+        document.getElementById("donutCostCell").innerHTML = donutCost;
+        document.getElementById("arcadeCostCell").innerHTML = arcadeCost;
+        document.getElementById("lemonadeUpCell").innerHTML = lemonadePScost;
       }
 
       function init() {
         drawCircle();
-        showStats();
+        afterCoinCountChange();
+        setInterval(addPerSecond, 1000);
       }
     </script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   </head>
   <body onload="init();">
-    <canvas id="game-board" onclick="handleClick();"></canvas>
-    <table>
-      <tr>
-        <th>Coins</th>
-        <td id="coinsCell"></td>
-      </tr>
-      <tr>
-        <th>Click rate</th>
-        <td id="clickRateCell">1</td>
-      </tr>
-    </table>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <canvas id="game-board" onclick="handleClick();"></canvas>
+          <table>
+            <tr>
+              <th>Coins</th>
+              <td id="coinsCell"></td>
+            </tr>
+            <tr>
+              <th>Click rate</th>
+              <td id="clickRateCell">1</td>
+            </tr>
+            <tr>
+              <th>Per Second</th>
+              <td id="perSecondCell"></td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-md-8">
+          <table>
+            <tr>
+              <th>Click Rate x2 Cost</th>
+              <td id="doubleClickRateCell"></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button id="clickRateButton" class="btn btn-default" onclick="purchaseClickRate();">Click Rate Double</button>
+              </td>
+            </tr>
+            <tr>
+              <th>Lemonade Stand Cost</th>
+              <td id="lemonadeCostCell"></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button id="lemonadeButton" class="btn btn-default" onclick="purchaseLemonade();">Lemonade Stand</button>
+              </td>
+            </tr>
+            <tr>
+              <th>Pizzaria Cost</th>
+              <td id="pizzariaCostCell"></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button id="pizzariaButton" class="btn btn-default" onclick="purchasePizzaria();">Pizzaria</button>
+              </td>
+            </tr>
+            <tr>
+              <th>Donut Shop Cost</th>
+              <td id="donutCostCell"></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button id="donutButton" class="btn btn-default" onclick="purchaseDonutShop();">Donut Shop</button>
+              </td>
+            </tr>
+            <tr>
+              <th>Arcade Cost</th>
+              <td id="arcadeCostCell"></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button id="arcadeButton" class="btn btn-default" onclick="purchaseArcade();">Arcade</button>
+              </td>
+            </tr>
+            <tr>
+              <th>Lemonade Upgrade Cost</th>
+              <td id="lemonadeUpCell"></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <button id="lemonadeUpButton" class="btn btn-warning" onclick="upgradeLemonade();">Lemonade Upgrade</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
